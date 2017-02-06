@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F5388841E48896200D73BD9 /* BBView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F5388831E48896200D73BD9 /* BBView.m */; };
 		842D008816F7064700BC2959 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842D008716F7064700BC2959 /* UIKit.framework */; };
 		842D008A16F7064700BC2959 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842D008916F7064700BC2959 /* Foundation.framework */; };
 		842D008C16F7064700BC2959 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 842D008B16F7064700BC2959 /* CoreGraphics.framework */; };
@@ -32,6 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2F5388821E48896200D73BD9 /* BBView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBView.h; sourceTree = "<group>"; };
+		2F5388831E48896200D73BD9 /* BBView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBView.m; sourceTree = "<group>"; };
 		842D008416F7064700BC2959 /* SAVideoRangeSliderExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SAVideoRangeSliderExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		842D008716F7064700BC2959 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		842D008916F7064700BC2959 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -156,6 +159,8 @@
 				842D00D616F7A68100BC2959 /* SASliderRight.m */,
 				842D00D716F7A68100BC2959 /* SAVideoRangeSlider.h */,
 				842D00D816F7A68100BC2959 /* SAVideoRangeSlider.m */,
+				2F5388821E48896200D73BD9 /* BBView.h */,
+				2F5388831E48896200D73BD9 /* BBView.m */,
 			);
 			name = SAVideoRangeSlider;
 			path = ../SAVideoRangeSlider;
@@ -232,6 +237,7 @@
 			files = (
 				842D009416F7064700BC2959 /* main.m in Sources */,
 				842D009816F7064700BC2959 /* AppDelegate.m in Sources */,
+				2F5388841E48896200D73BD9 /* BBView.m in Sources */,
 				842D00A116F7064700BC2959 /* ViewController.m in Sources */,
 				842D00D916F7A68100BC2959 /* SAResizibleBubble.m in Sources */,
 				842D00DA16F7A68100BC2959 /* SASliderLeft.m in Sources */,

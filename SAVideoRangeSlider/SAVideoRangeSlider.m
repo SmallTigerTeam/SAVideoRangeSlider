@@ -24,11 +24,11 @@
 // THE SOFTWARE.
 
 #import "SAVideoRangeSlider.h"
-
+#import "BBView.h"
 @interface SAVideoRangeSlider ()
 
 @property (nonatomic, strong) AVAssetImageGenerator *imageGenerator;
-@property (nonatomic, strong) UIView *bgView;
+@property (nonatomic, strong) UIScrollView *bgView;
 @property (nonatomic, strong) UIView *centerView;
 @property (nonatomic, strong) NSURL *videoUrl;
 @property (nonatomic, strong) SASliderLeft *leftThumb;
@@ -55,10 +55,11 @@
         
         int thumbWidth = ceil(frame.size.width*0.05);
         
-        _bgView = [[UIControl alloc] initWithFrame:CGRectMake(thumbWidth-BG_VIEW_BORDERS_SIZE, 0, frame.size.width-(thumbWidth*2)+BG_VIEW_BORDERS_SIZE*2, frame.size.height)];
+        _bgView = [[UIScrollView alloc] initWithFrame:CGRectMake(thumbWidth-BG_VIEW_BORDERS_SIZE, 0, frame.size.width-(thumbWidth*2)+BG_VIEW_BORDERS_SIZE*2, frame.size.height)];
         _bgView.layer.borderColor = [UIColor grayColor].CGColor;
         _bgView.layer.borderWidth = BG_VIEW_BORDERS_SIZE;
-        [self addSubview:_bgView];
+        
+                [self addSubview:_bgView];
         
         _videoUrl = videoUrl;
         
@@ -103,18 +104,18 @@
         
         
         
-        _centerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        _centerView.backgroundColor = [UIColor clearColor];
-        [self addSubview:_centerView];
+//        _centerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+//        _centerView.backgroundColor = [UIColor clearColor];
+//        [self addSubview:_centerView];
         
-        UIPanGestureRecognizer *centerPan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleCenterPan:)];
-        [_centerView addGestureRecognizer:centerPan];
+//        UIPanGestureRecognizer *centerPan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleCenterPan:)];
+//        [_centerView addGestureRecognizer:centerPan];
         
         
         _popoverBubble = [[SAResizibleBubble alloc] initWithFrame:CGRectMake(0, -50, 100, 50)];
         _popoverBubble.alpha = 0;
         _popoverBubble.backgroundColor = [UIColor clearColor];
-        [self addSubview:_popoverBubble];
+//        [self addSubview:_popoverBubble];
         
         
         _bubleText = [[UILabel alloc] initWithFrame:_popoverBubble.frame];
@@ -123,7 +124,7 @@
         _bubleText.textColor = [UIColor blackColor];
         _bubleText.textAlignment = UITextAlignmentCenter;
         
-        [_popoverBubble addSubview:_bubleText];
+//        [_popoverBubble addSubview:_bubleText];
         
         [self getMovieFrame];
     }
@@ -210,7 +211,7 @@
         
     }
     
-    _popoverBubble.alpha = 1;
+    _popoverBubble.alpha = 0;
     
     [self setTimeLabel];
     
@@ -363,7 +364,7 @@
     _durationSeconds = CMTimeGetSeconds([myAsset duration]);
     
     int picsCnt = ceil(_bgView.frame.size.width / picWidth);
-    
+    self.bgView.contentSize = CGSizeMake(700, CGRectGetHeight(self.bgView.frame));
     NSMutableArray *allTimes = [[NSMutableArray alloc] init];
     
     int time4Pic = 0;
@@ -413,9 +414,9 @@
 
             ii++;
             
-            dispatch_async(dispatch_get_main_queue(), ^{
+//            dispatch_async(dispatch_get_main_queue(), ^{
                 [_bgView addSubview:tmp];
-            });
+//            });
             
             
             
@@ -423,65 +424,73 @@
             CGImageRelease(halfWayImage);
             
         }
-        
-        
+    
+        BBView *view = [[BBView alloc] initWithFrame:_bgView.frame];
+        view.contentFrame = CGRectMake(50, 0, 50, 50);
+//        view.backgroundColor = [UIColor redColor];
+//        view.alpha = 0.5;
+        [_bgView addSubview:view];
         return;
     }
     
-    for (int i=1; i<picsCnt; i++){
-        time4Pic = i*picWidth;
-        
-        CMTime timeFrame = CMTimeMakeWithSeconds(_durationSeconds*time4Pic/_bgView.frame.size.width, 600);
-        
-        [allTimes addObject:[NSValue valueWithCMTime:timeFrame]];
-    }
+//    for (int i=1; i<picsCnt; i++){
+//        time4Pic = i*picWidth;
+//        
+//        CMTime timeFrame = CMTimeMakeWithSeconds(_durationSeconds*time4Pic/_bgView.frame.size.width, 600);
+//        
+//        [allTimes addObject:[NSValue valueWithCMTime:timeFrame]];
+//    }
+//    
+//    NSArray *times = allTimes;
+//    
+//    __block int i = 1;
+//    
+//    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times
+//                                              completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime,
+//                                                                  AVAssetImageGeneratorResult result, NSError *error) {
+//                                                  
+//                                                  if (result == AVAssetImageGeneratorSucceeded) {
+//                                                      
+//                                                      
+//                                                      UIImage *videoScreen;
+//                                                      if ([self isRetina]){
+//                                                          videoScreen = [[UIImage alloc] initWithCGImage:image scale:2.0 orientation:UIImageOrientationUp];
+//                                                      } else {
+//                                                          videoScreen = [[UIImage alloc] initWithCGImage:image];
+//                                                      }
+//                                                      
+//                                                      
+//                                                      UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
+//                                                      
+//                                                      int all = (i+1)*tmp.frame.size.width;
+//                                                      
+//                                                      
+//                                                      CGRect currentFrame = tmp.frame;
+//                                                      currentFrame.origin.x = i*currentFrame.size.width;
+//                                                      if (all > _bgView.frame.size.width){
+//                                                          int delta = all - _bgView.frame.size.width;
+//                                                          currentFrame.size.width -= delta;
+//                                                      }
+//                                                      tmp.frame = currentFrame;
+//                                                      i++;
+//                                                      
+//                                                      dispatch_async(dispatch_get_main_queue(), ^{
+//                                                          [_bgView addSubview:tmp];
+//                                                      });
+//                                                      
+//                                                  }
+//                                                  
+//                                                  if (result == AVAssetImageGeneratorFailed) {
+//                                                      NSLog(@"Failed with error: %@", [error localizedDescription]);
+//                                                  }
+//                                                  if (result == AVAssetImageGeneratorCancelled) {
+//                                                      NSLog(@"Canceled");
+//                                                  }
+//                                              }];
     
-    NSArray *times = allTimes;
     
-    __block int i = 1;
     
-    [self.imageGenerator generateCGImagesAsynchronouslyForTimes:times
-                                              completionHandler:^(CMTime requestedTime, CGImageRef image, CMTime actualTime,
-                                                                  AVAssetImageGeneratorResult result, NSError *error) {
-                                                  
-                                                  if (result == AVAssetImageGeneratorSucceeded) {
-                                                      
-                                                      
-                                                      UIImage *videoScreen;
-                                                      if ([self isRetina]){
-                                                          videoScreen = [[UIImage alloc] initWithCGImage:image scale:2.0 orientation:UIImageOrientationUp];
-                                                      } else {
-                                                          videoScreen = [[UIImage alloc] initWithCGImage:image];
-                                                      }
-                                                      
-                                                      
-                                                      UIImageView *tmp = [[UIImageView alloc] initWithImage:videoScreen];
-                                                      
-                                                      int all = (i+1)*tmp.frame.size.width;
-                                                      
-                                                      
-                                                      CGRect currentFrame = tmp.frame;
-                                                      currentFrame.origin.x = i*currentFrame.size.width;
-                                                      if (all > _bgView.frame.size.width){
-                                                          int delta = all - _bgView.frame.size.width;
-                                                          currentFrame.size.width -= delta;
-                                                      }
-                                                      tmp.frame = currentFrame;
-                                                      i++;
-                                                      
-                                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                                          [_bgView addSubview:tmp];
-                                                      });
-                                                      
-                                                  }
-                                                  
-                                                  if (result == AVAssetImageGeneratorFailed) {
-                                                      NSLog(@"Failed with error: %@", [error localizedDescription]);
-                                                  }
-                                                  if (result == AVAssetImageGeneratorCancelled) {
-                                                      NSLog(@"Canceled");
-                                                  }
-                                              }];
+
 }
 
 
